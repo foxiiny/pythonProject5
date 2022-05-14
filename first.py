@@ -1,22 +1,29 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
-def print_hello(name="World"):
-    st.write(f"## Hello, {name}!")
+@st.cache
+def get_data():
+    return pd.read_csv('kpop_idols.csv')
 
 
-name = st.text_input("Your name", key="name", value="Anonymous")
-print_hello(name)
+df = get_data()
 
-"""
-Let's play with functions
-"""
-a = st.slider("a")
-x = np.linspace(-6, 6, 500)
-df = pd.DataFrame(dict(y=np.sin(a*x)))
 
-st.line_chart(df)
+country = st.selectbox('Country', df['Country'].value_counts().iloc[:5].index)
+
+
+df_selection1 = df[lambda x: x['Country'] == country]
+df_selection1
+
+
+group = st.selectbox('Group', df['Group'].value_counts().index)
+df_selection2 = df[lambda x: x['Group'] == group]
+df_selection2
+
+
 
 
